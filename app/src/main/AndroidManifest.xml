@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:name=".App"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         >
@@ -20,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".signup.SignupActivity" />
+        <activity android:name=".signin.SigninActivity" />
     </application>
 
 </manifest>
