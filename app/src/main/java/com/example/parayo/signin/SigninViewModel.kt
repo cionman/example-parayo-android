@@ -7,16 +7,28 @@ import com.example.parayo.api.request.SigninRequest
 import com.example.parayo.api.response.ApiResponse
 import com.example.parayo.api.response.SigninResponse
 import com.example.parayo.common.Prefs
+import com.example.parayo.product.ProductMainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.codephobia.ankomvvm.lifecycle.BaseViewModel
+import org.jetbrains.anko.error
 
 class SigninViewModel (app: Application): BaseViewModel(app){
     val email = MutableLiveData("")
     val password = MutableLiveData("")
 
-    suspend fun siginin() {
+    suspend fun signin() {
         val request = SigninRequest(email.value, password.value)
+        if(isNotValidSignin(request))
+            return
+
+        try {
+            val response = requestSignin(request)
+            onSigninResponse(response)
+        } catch (e: Exception) {
+            error("signin error", e)
+            toast("알 수 없는 오류가 발생했습니다")
+        }
     }
 
     private fun isNotValidSignin(request: SigninRequest) =
@@ -32,7 +44,7 @@ class SigninViewModel (app: Application): BaseViewModel(app){
             else -> false
         }
 
-    private suspend fun requestSiginin(request: SigninRequest) =
+    private suspend fun requestSignin(request: SigninRequest) =
         withContext(Dispatchers.IO){
             ParayoApi.instance.signin(request)
         }
@@ -45,7 +57,8 @@ class SigninViewModel (app: Application): BaseViewModel(app){
             Prefs.userId = response.data.userId
 
             toast("로그인 되었습니다.")
-            TODO("상풍 리스트 화면으로 이동")
+
+            startActivityAndFinish<ProductMainActivity>()
         }else{
             toast(response.message ?: "알 수 없는 오류가 발생했습니다.")
         }
