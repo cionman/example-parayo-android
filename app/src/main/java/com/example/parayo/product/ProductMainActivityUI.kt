@@ -52,7 +52,7 @@ class ProductMainUI(
                             .setActionView(searchView {
                                 onQueryTextListener {
                                     onQueryTextSubmit { key ->
-                                        //viewModel.openSearchActivity(key)
+                                        viewModel.openSearchActivity(key)
                                         true
                                     }
                                 }
@@ -77,7 +77,7 @@ class ProductMainUI(
 
                 floatingActionButton {
                     imageResource = R.drawable.ic_add
-                    onClick { /*viewModel.openRegistrationActivity()*/ }
+                    onClick { viewModel.openRegistrationActivity() }
                 }.lparams {
                     bottomMargin = dip(20)
                     marginEnd = dip(20)
@@ -109,8 +109,7 @@ class ProductMainUI(
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             MENU_ID_INQUIRY -> {
-                viewModel.toast("내 문의")
-               // viewModel.startActivity<MyInquiryActivity>()
+                viewModel.startActivity<MyInquiryActivity>()
             }
             MENU_ID_LOGOUT -> {
                 Prefs.token = null
