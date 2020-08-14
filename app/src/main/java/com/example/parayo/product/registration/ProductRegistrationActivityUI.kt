@@ -155,6 +155,4 @@ class ProductRegistrationActivityUI(
             }
         }
     }.lparams(dip(60), dip(60))
-
-
 }

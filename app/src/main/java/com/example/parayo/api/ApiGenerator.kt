@@ -13,13 +13,30 @@ class ApiGenerator{
         .build()
         .create(api)
 
-    private fun httpClient() = OkHttpClient.Builder().apply {
-        addInterceptor(httpLoggingInterceptor())
-    }.build()
+    fun <T> generateRefreshClient(api: Class<T>): T = Retrofit.Builder()
+        .baseUrl(HOST)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(refreshClient())
+        .build()
+        .create(api)
 
-    private fun httpLoggingInterceptor() = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
+    private fun httpClient() =
+        OkHttpClient.Builder().apply {
+            addInterceptor(httpLoggingInterceptor())
+            addInterceptor(ApiTokenInterceptor())
+            authenticator(TokenAuthenticator())
+        }.build()
+
+    private fun refreshClient() =
+        OkHttpClient.Builder().apply {
+            addInterceptor(httpLoggingInterceptor())
+            addInterceptor(TokenRefreshInterceptor())
+        }.build()
+
+    private fun httpLoggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
     companion object{
         const val HOST = "http://172.20.10.8:8080"
