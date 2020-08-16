@@ -52,7 +52,7 @@ class ProductMainUI(
                             .setActionView(searchView {
                                 onQueryTextListener {
                                     onQueryTextSubmit { key ->
-                                        viewModel.openSearchActivity(key)
+                                        //viewModel.openSearchActivity(key)
                                         true
                                     }
                                 }
@@ -109,7 +109,7 @@ class ProductMainUI(
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             MENU_ID_INQUIRY -> {
-                viewModel.startActivity<MyInquiryActivity>()
+                //viewModel.startActivity<MyInquiryActivity>()
             }
             MENU_ID_LOGOUT -> {
                 Prefs.token = null
